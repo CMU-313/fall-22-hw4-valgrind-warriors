@@ -13,7 +13,7 @@ def configure_routes(app):
 
     @app.route('/')
     def hello():
-        return "try the predict route it is great!"
+        return "welcome to ML microservice"
 
 
     @app.route('/predict')
@@ -30,4 +30,4 @@ def configure_routes(app):
         })
         query = pd.get_dummies(query_df)
         prediction = clf.predict(query)
-        return jsonify(np.asscalar(prediction))
+        return jsonify(np.ndarray.item(prediction))

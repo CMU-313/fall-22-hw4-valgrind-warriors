@@ -10,6 +10,8 @@ sklearn = "*"
 joblib = "*"
 flask = "*"
 pytest = "*"
+importlib-metadata = "*"
+flask-cors = "*"
 
 [dev-packages]
 pandas = "*"
