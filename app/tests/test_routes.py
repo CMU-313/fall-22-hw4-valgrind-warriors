@@ -53,16 +53,16 @@ def test_predict_score_failFailure():
                                     ('G1', '17'), ('G2', '18')]) #missing 'failure' input
     assert response.status_code == 400
 
-#invaild user input for incorrect Walc - negative value
-def test_predict_score_failWalcNeg():
+#invaild user input for missing G1 input 
+def test_predict_score_failG1():
     app = Flask(__name__)
     configure_routes(app)
     client = app.test_client()
     url = '/predict/score'
     response = client.get(url_for(url), 
                           headers=[('studytime', '1'), ('Dalc', '4'),
-                                    ('Walc', '-1'), ('health', '5'), ('absences','10'),
-                                    ('G1', '17'), ('G2', '18')]) #'Walc' input is negative
+                                    ('Walc', '1'), ('health', '5'), ('absences','10'),
+                                    ('G2', '18')]) #'Walc' input is negative
     assert response.status_code == 400
 
 #invaild user input for incorrect Walc - 0 value
