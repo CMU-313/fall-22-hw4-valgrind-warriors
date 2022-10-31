@@ -98,11 +98,22 @@ def test_predict_decision():
     client = app.test_client()
     url = '/predict/decision'
 
-    #TODO: complete this test
     response = client.get(url_for(url), 
                           headers = [('studytime', '4'), ('failures', '1'), ('Dalc', '4'),
                                     ('Walc', '3'), ('health', '3'), ('absences','8'),
                                     ('G1', '17'), ('G2', '18')])
-    assert response.status_code = 200 
+    assert response.status_code == 200 
     decision = (str)(json.loads(response.data.decode('utf-8').get('decision')))
     assert decision == "yes" or decision == "no"
+
+#invaild user input for missing parameter G1
+def test_predict_decision_failG1():
+    app = Flask(__name__)
+    configure_routes(app)
+    client = app.test_client()
+    url = '/predict/decision'
+    response = client.get(url_for(url), 
+                          headers = [('studytime', '4'), ('failures', '1'), ('Dalc', '4'),
+                                    ('Walc', '3'), ('health', '3'), ('absences','8'),
+                                    ('G2', '18')])
+    assert response.status_code == 200 
