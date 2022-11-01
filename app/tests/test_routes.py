@@ -92,8 +92,28 @@ def test_predict_score_missHealth():
     assert response.status_code == 400
 
 #Missing 'absences' input 
+def test_predict_score_missAbscences():
+    app = Flask(__name__)
+    configure_routes(app)
+    client = app.test_client()
+    url = '/predict/score'
+    response = client.get(url_for(url), 
+                          headers=[('studytime', '1'), ('failures', '2'), ('Dalc', '4'),
+                                    ('Walc', '1'), ('health', '5'),('absences', NULL),
+                                    ('G1', '17'),('G2', '18')]) 
+    assert response.status_code == 400
 
 #Missing 'Dalc' input
+def test_predict_score_missDalc():
+    app = Flask(__name__)
+    configure_routes(app)
+    client = app.test_client()
+    url = '/predict/score'
+    response = client.get(url_for(url), 
+                          headers=[('studytime', '1'), ('failures', '2'), ('Dalc', NULL),
+                                    ('Walc', '1'), ('health', '5'),('absences', '10'),
+                                    ('G1', '17'),('G2', '18')]) 
+    assert response.status_code == 400
 
 
 
@@ -134,8 +154,41 @@ def test_predict_score_failWalcGreater():
                                     ('G1', '17'), ('G2', '18')]) #'Walc' input is 6
     assert response.status_code == 400
 
+#invalid user input for incorrect absences - greater than 93
+def test_predict_score_failAbsencesGreater():
+    app = Flask(__name__)
+    configure_routes(app)
+    client = app.test_client()
+    url = '/predict/score'
+    response = client.get(url_for(url), 
+                          headers=[('studytime', '1'), ('failures', '2'),('Dalc', '4'),
+                                    ('Walc', '5'), ('health', '5'), ('absences','94'),
+                                    ('G1', '17'), ('G2', '18')]) #'absences' input is 94
+    assert response.status_code == 400
 
+#invalid user input for incorrect G1 - greater than 20
+def test_predict_score_failG1Greater():
+    app = Flask(__name__)
+    configure_routes(app)
+    client = app.test_client()
+    url = '/predict/score'
+    response = client.get(url_for(url), 
+                          headers=[('studytime', '1'), ('failures', '2'),('Dalc', '4'),
+                                    ('Walc', '5'), ('health', '5'), ('absences','10'),
+                                    ('G1', '21'), ('G2', '18')]) #'G1' input is 21
+    assert response.status_code == 400
 
+#invalid user input for incorrect G2 - greater than 20
+def test_predict_score_failG2Greater():
+    app = Flask(__name__)
+    configure_routes(app)
+    client = app.test_client()
+    url = '/predict/score'
+    response = client.get(url_for(url), 
+                          headers=[('studytime', '1'), ('failures', '2'),('Dalc', '4'),
+                                    ('Walc', '5'), ('health', '5'), ('absences','10'),
+                                    ('G1', '17'), ('G2', '21')]) #'G2' input is 21
+    assert response.status_code == 400
     
 #successful user input - checking decision value is 'yes' or 'no'
 def test_predict_decision():
