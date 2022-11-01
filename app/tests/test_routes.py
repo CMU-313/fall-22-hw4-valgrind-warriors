@@ -189,6 +189,102 @@ def test_predict_score_failG2Greater():
                                     ('Walc', '5'), ('health', '5'), ('absences','10'),
                                     ('G1', '17'), ('G2', '21')]) #'G2' input is 21
     assert response.status_code == 400
+
+#negative user input for studytime
+def test_predict_score_failNegStudytime():
+    app = Flask(__name__)
+    configure_routes(app)
+    client = app.test_client()
+    url = '/predict/score'
+    response = client.get(url_for(url), 
+                          headers=[('studytime', '-1'), ('failures', '2'),('Dalc', '4'),
+                                    ('Walc', '5'), ('health', '5'), ('absences','10'),
+                                    ('G1', '17'), ('G2', '18')]) #'studytime' input is -1
+    assert response.status_code == 400
+
+#negative user input for failures
+def test_predict_score_failNegFailures():
+    app = Flask(__name__)
+    configure_routes(app)
+    client = app.test_client()
+    url = '/predict/score'
+    response = client.get(url_for(url), 
+                          headers=[('studytime', '1'), ('failures', '-2'),('Dalc', '4'),
+                                    ('Walc', '5'), ('health', '5'), ('absences','10'),
+                                    ('G1', '17'), ('G2', '18')]) #'failures' input is -2
+    assert response.status_code == 400
+
+#negative user input for Dalc
+def test_predict_score_failNegDalc():
+    app = Flask(__name__)
+    configure_routes(app)
+    client = app.test_client()
+    url = '/predict/score'
+    response = client.get(url_for(url), 
+                          headers=[('studytime', '1'), ('failures', '2'),('Dalc', '-4'),
+                                    ('Walc', '5'), ('health', '5'), ('absences','10'),
+                                    ('G1', '17'), ('G2', '18')]) #'Dalc'input is -4 
+    assert response.status_code == 400
+
+#negative user input for Walc
+def test_predict_score_failNegWalc():
+    app = Flask(__name__)
+    configure_routes(app)
+    client = app.test_client()
+    url = '/predict/score'
+    response = client.get(url_for(url), 
+                          headers=[('studytime', '1'), ('failures', '2'),('Dalc', '4'),
+                                    ('Walc', '-5'), ('health', '5'), ('absences','10'),
+                                    ('G1', '17'), ('G2', '18')]) #'Walc' input is -5
+    assert response.status_code == 400
+
+#negative user input for health
+def test_predict_score_failNegHealth():
+    app = Flask(__name__)
+    configure_routes(app)
+    client = app.test_client()
+    url = '/predict/score'
+    response = client.get(url_for(url), 
+                          headers=[('studytime', '1'), ('failures', '2'),('Dalc', '4'),
+                                    ('Walc', '5'), ('health', '-5'), ('absences','10'),
+                                    ('G1', '17'), ('G2', '18')]) #'health' input is -5
+    assert response.status_code == 400
+
+#negative user input for absences
+def test_predict_score_failNegAbsences():
+    app = Flask(__name__)
+    configure_routes(app)
+    client = app.test_client()
+    url = '/predict/score'
+    response = client.get(url_for(url), 
+                          headers=[('studytime', '1'), ('failures', '2'),('Dalc', '4'),
+                                    ('Walc', '5'), ('health', '5'), ('absences','-10'),
+                                    ('G1', '17'), ('G2', '18')]) #'absences' input is -10
+    assert response.status_code == 400
+
+#negative user input for G1
+def test_predict_score_failNegG1():
+    app = Flask(__name__)
+    configure_routes(app)
+    client = app.test_client()
+    url = '/predict/score'
+    response = client.get(url_for(url), 
+                          headers=[('studytime', '1'), ('failures', '2'),('Dalc', '4'),
+                                    ('Walc', '5'), ('health', '5'), ('absences','10'),
+                                    ('G1', '-17'), ('G2', '18')]) #'G1' input is -17
+    assert response.status_code == 400
+
+#negative user input for G2
+def test_predict_score_failNegG2():
+    app = Flask(__name__)
+    configure_routes(app)
+    client = app.test_client()
+    url = '/predict/score'
+    response = client.get(url_for(url), 
+                          headers=[('studytime', '1'), ('failures', '2'),('Dalc', '4'),
+                                    ('Walc', '5'), ('health', '5'), ('absences','10'),
+                                    ('G1', '17'), ('G2', '-18')]) #'G2' input is -18
+    assert response.status_code == 400
     
 #successful user input - checking decision value is 'yes' or 'no'
 def test_predict_decision():
