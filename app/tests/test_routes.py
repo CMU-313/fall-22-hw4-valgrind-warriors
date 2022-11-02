@@ -94,7 +94,7 @@ def test_predict_score_missHealth():
 #Missing 'absences' input 
 def test_predict_score_missAbscences():
     app = Flask(__name__)
-    configure_routes(app)
+    configure_routes(app) 
     client = app.test_client()
     url = '/predict/score'
     response = client.get(url_for(url), 
@@ -315,3 +315,50 @@ def test_predict_decision_failG1():
     assert response.status_code == 200 
 
 #invalid user input for the parameters 
+#studytime greater than 4 -- invalid 
+def test_predict_decision_failStudytimeGreater():
+    app = Flask(__name__)
+    configure_routes(app)
+    client = app.test_client()
+    url = '/predict/score'
+    response = client.get(url_for(url), 
+                          headers=[('studytime', '5'),('failures', '2'), ('Dalc', '4'),
+                                    ('Walc', '3'), ('health', '5'), ('absences','10'),
+                                    ('G1', '17'), ('G2', '18')]) 
+    assert response.status_code == 400
+
+#failures greater than 4 - invalid 
+def test_predict_decision_failFailureGreater():
+    app = Flask(__name__)
+    configure_routes(app)
+    client = app.test_client()
+    url = '/predict/score'
+    response = client.get(url_for(url), 
+                          headers=[('studytime', '1'),('failures', '5'), ('Dalc', '4'),
+                                    ('Walc', '3'), ('health', '5'), ('absences','10'),
+                                    ('G1', '17'), ('G2', '18')]) 
+    assert response.status_code == 400
+
+#dalc greater than 5- invalid 
+def test_predict_decision_failDalcGreater():
+    app = Flask(__name__)
+    configure_routes(app)
+    client = app.test_client()
+    url = '/predict/score'
+    response = client.get(url_for(url), 
+                          headers=[('studytime', '1'),('failures', '2'), ('Dalc', '7'),
+                                    ('Walc', '3'), ('health', '5'), ('absences','10'),
+                                    ('G1', '17'), ('G2', '18')]) 
+    assert response.status_code == 400
+
+#health greater than 5- invalid 
+def test_predict_decision_failHealthGreater():
+    app = Flask(__name__)
+    configure_routes(app)
+    client = app.test_client()
+    url = '/predict/score'
+    response = client.get(url_for(url), 
+                          headers=[('studytime', '1'),('failures', '2'), ('Dalc', '4'),
+                                    ('Walc', '3'), ('health', '8'), ('absences','10'),
+                                    ('G1', '17'), ('G2', '18')]) 
+    assert response.status_code == 400
