@@ -37,7 +37,7 @@ paths:
   /predict/score:
     get:
       summary: predict G3 score of the student
-      description: Given students' information of study time, class failures, worday and weekend alcohol consumption, health, absences, G1 and G2 scores, give a numeric prediction the G3 score of the student
+      description: Given students' information of study time, class failures, workday and weekend alcohol consumption, health, absences, G1 and G2 scores, give a numeric prediction the G3 score of the student
       parameters:
         - in: query
           name: studytime
@@ -108,7 +108,7 @@ paths:
   /predict/decision:
     get:
       summary: predict the admission status of the student
-      description: Given students' information of study time, class failures, worday and weekend alcohol consumption, health, absences, G1 and G2 scores, give a numeric prediction the G3 score of the student, give the predicted admission decision of the student
+      description: Given students' information of study time, class failures, workday and weekend alcohol consumption, health, absences, G1 and G2 scores, give a numeric prediction the G3 score of the student, give the predicted admission decision of the student
       parameters:
         - in: query
           name: studytime
