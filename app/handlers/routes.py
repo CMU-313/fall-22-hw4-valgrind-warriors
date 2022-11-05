@@ -1,5 +1,5 @@
 import this
-from flask import Flask, jsonify, request
+from flask import Flask, abort, jsonify, request
 import joblib
 import pandas as pd
 import numpy as np
@@ -8,7 +8,7 @@ import os
 def configure_routes(app):
 
     this_dir = os.path.dirname(__file__)
-    model_path = os.path.join(this_dir, "model.pkl")
+    model_path = os.path.join(this_dir, "linear_regression_model.pkl")
     clf = joblib.load(model_path)
 
     @app.route('/')
@@ -16,18 +16,71 @@ def configure_routes(app):
         return "welcome to ML microservice"
 
 
-    @app.route('/predict')
-    def predict():
+    @app.route('/predict/score')
+    def predict_score():
         #use entries from the query string here but could also use json
-        age = request.args.get('age')
-        absences = request.args.get('absences')
-        health = request.args.get('health')
-        data = [[age], [health], [absences]]
+        studytime = int(request.args.get('studytime'))
+        failures = int(request.args.get('failures'))
+        Dalc = int(request.args.get('Dalc'))
+        Walc = int(request.args.get('Walc'))
+        health = int(request.args.get('health'))
+        absences = int(request.args.get('absences'))
+        G1 = int(request.args.get('G1'))
+        G2 = int(request.args.get('G2'))
+
+        
+        if  studytime < 0 or studytime > 4:
+            abort(400, "invalid studytime")
+            
+        #TODO: Add more cases to check the request parameters
+            
+        
         query_df = pd.DataFrame({
-            'age': pd.Series(age),
-            'health': pd.Series(health),
-            'absences': pd.Series(absences)
+            'Dalc': pd.Series([Dalc]),
+            'G1': pd.Series([G1]),
+            'G2': pd.Series([G2]),
+            'Walc': pd.Series([Walc]),
+            'absences': pd.Series([absences]),
+            'failures': pd.Series([failures]),
+            'health': pd.Series([health]),
+            'studytime': pd.Series([studytime]),
         })
         query = pd.get_dummies(query_df)
-        prediction = clf.predict(query)
-        return jsonify(np.ndarray.item(prediction))
+        prediction = round(clf.predict(query)[0])
+        return jsonify(G3_score=str(prediction))
+
+    @app.route('/predict/decision')
+    def predict_decision():
+        #use entries from the query string here but could also use json
+        studytime = int(request.args.get('studytime'))
+        failures = int(request.args.get('failures'))
+        Dalc = int(request.args.get('Dalc'))
+        Walc = int(request.args.get('Walc'))
+        health = int(request.args.get('health'))
+        absences = int(request.args.get('absences'))
+        G1 = int(request.args.get('G1'))
+        G2 = int(request.args.get('G2'))
+
+        
+        if  studytime < 0 or studytime > 4:
+            abort(400, "invalid studytime")
+            
+        #TODO: Add more cases to check the request parameters
+            
+        
+        query_df = pd.DataFrame({
+            'Dalc': pd.Series([Dalc]),
+            'G1': pd.Series([G1]),
+            'G2': pd.Series([G2]),
+            'Walc': pd.Series([Walc]),
+            'absences': pd.Series([absences]),
+            'failures': pd.Series([failures]),
+            'health': pd.Series([health]),
+            'studytime': pd.Series([studytime]),
+        })
+        query = pd.get_dummies(query_df)
+        prediction = round(clf.predict(query)[0])
+        
+        decision = "yes" if prediction >= 15 else "no"
+        return jsonify(decision=str(decision))
+
