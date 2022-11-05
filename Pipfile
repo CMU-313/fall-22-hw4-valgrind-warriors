@@ -12,6 +12,7 @@ flask = "*"
 pytest = "*"
 importlib-metadata = "*"
 flask-cors = "*"
+seaborn = "*"
 
 [dev-packages]
 pandas = "*"
