@@ -1,3 +1,10 @@
+# Updated machine learning model
+
+The newly trained machine learning model uses linear regression to predict the
+G3 score. It is trained by first splitting the total data into train data and test
+data, and using `['studytime', 'failures', 'Dalc', 'Walc','health', 'absences','G1', 'G2']` as independent variables, `G3` as dependent variable. The trained
+linear regression produces an output of accuracy of 82% in the test data set.
+
 # HW4 Starter Code and Instructions
 
 Please consult the [homework assignment](https://cmu-313.github.io//assignments/hw4) for additional context and instructions for this code.
