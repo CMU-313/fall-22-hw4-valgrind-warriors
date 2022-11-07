@@ -9,9 +9,8 @@ def test_base_route():
     configure_routes(app)
     client = app.test_client()
     url = '/'
-
+    
     response = client.get(url)
-
     assert response.status_code == 200
     assert response.get_data() == b'welcome to ML microservice'
 
@@ -59,6 +58,7 @@ def test_predict_score_missStudytime():
         }
         response = client.get(url_for(url, **data)) 
         assert response.status_code == 400
+
 
 #Missing 'failure' input
 def test_predict_score_missFailure():
@@ -482,7 +482,7 @@ def test_predict_decision():
         }
         response = client.get(url_for(url, **data))
         assert response.status_code == 200 
-        decision = (str)(json.loads(response.data.decode('utf-8').get('decision')))
+        decision = json.loads(response.data.decode('utf-8')).get('decision')
         assert (decision == "yes" or decision == "no")
 
 #Missing parameters 
@@ -706,3 +706,5 @@ def test_predict_decision_failFailuresSmaller():
         }
         response = client.get(url_for(url, **data)) 
         assert response.status_code == 400
+
+

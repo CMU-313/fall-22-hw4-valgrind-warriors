@@ -18,15 +18,17 @@ def configure_routes(app):
 
     @app.route('/predict/score')
     def predict_score():
-        #use entries from the query string here but could also use json
-        studytime = int(request.args.get('studytime'))
-        failures = int(request.args.get('failures'))
-        Dalc = int(request.args.get('Dalc'))
-        Walc = int(request.args.get('Walc'))
-        health = int(request.args.get('health'))
-        absences = int(request.args.get('absences'))
-        G1 = int(request.args.get('G1'))
-        G2 = int(request.args.get('G2'))
+        try:
+            studytime = int(request.args.get('studytime'))
+            failures = int(request.args.get('failures'))
+            Dalc = int(request.args.get('Dalc'))
+            Walc = int(request.args.get('Walc'))
+            health = int(request.args.get('health'))
+            absences = int(request.args.get('absences'))
+            G1 = int(request.args.get('G1'))
+            G2 = int(request.args.get('G2'))
+        except TypeError:
+            abort(400, "input type is not integer")
 
         #check if user input is valid
         if studytime < 0 or studytime > 4:
@@ -70,15 +72,17 @@ def configure_routes(app):
 
     @app.route('/predict/decision')
     def predict_decision():
-        #use entries from the query string here but could also use json
-        studytime = int(request.args.get('studytime'))
-        failures = int(request.args.get('failures'))
-        Dalc = int(request.args.get('Dalc'))
-        Walc = int(request.args.get('Walc'))
-        health = int(request.args.get('health'))
-        absences = int(request.args.get('absences'))
-        G1 = int(request.args.get('G1'))
-        G2 = int(request.args.get('G2'))
+        try:
+            studytime = int(request.args.get('studytime'))
+            failures = int(request.args.get('failures'))
+            Dalc = int(request.args.get('Dalc'))
+            Walc = int(request.args.get('Walc'))
+            health = int(request.args.get('health'))
+            absences = int(request.args.get('absences'))
+            G1 = int(request.args.get('G1'))
+            G2 = int(request.args.get('G2'))
+        except TypeError:
+            abort(400, "input type is not integer")
 
         #check if user input is valid
         if studytime < 0 or studytime > 4:
