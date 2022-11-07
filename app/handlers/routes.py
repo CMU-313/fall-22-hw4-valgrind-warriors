@@ -66,7 +66,7 @@ def configure_routes(app):
         })
         query = pd.get_dummies(query_df)
         prediction = round(clf.predict(query)[0])
-        return jsonify(G3_score=str(prediction))
+        return jsonify(G3=str(prediction))
 
     @app.route('/predict/decision')
     def predict_decision():
