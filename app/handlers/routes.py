@@ -28,11 +28,30 @@ def configure_routes(app):
         G1 = int(request.args.get('G1'))
         G2 = int(request.args.get('G2'))
 
-        
-        if  studytime < 0 or studytime > 4:
-            abort(400, "invalid studytime")
+        #check if user input is valid
+        if studytime < 0 or studytime > 4:
+            abort(400, "invalid studytime input")
             
-        #TODO: Add more cases to check the request parameters
+        if failures < 1 or failures == 3 or failures > 4:
+            abort(400, "invalid failures input")
+        
+        if Dalc < 1 or Dalc > 5:
+            abort(400, "invalid Dalc input")
+
+        if Walc < 1 or Walc > 5:
+            abort(400, "invalid Walc input")
+
+        if health < 1 or health > 5:
+            abort(400, "invalid health input")
+
+        if absences < 0 or absences > 93:
+            abort(400, "invalid absences input")
+
+        if G1 < 0 or G1 > 20:
+            abort(400, "invalid G1 input")
+
+        if G2 < 0 or G2 > 20:
+            abort(400, "invalid G2 input")
             
         
         query_df = pd.DataFrame({
