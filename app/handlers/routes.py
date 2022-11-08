@@ -18,21 +18,42 @@ def configure_routes(app):
 
     @app.route('/predict/score')
     def predict_score():
-        #use entries from the query string here but could also use json
-        studytime = int(request.args.get('studytime'))
-        failures = int(request.args.get('failures'))
-        Dalc = int(request.args.get('Dalc'))
-        Walc = int(request.args.get('Walc'))
-        health = int(request.args.get('health'))
-        absences = int(request.args.get('absences'))
-        G1 = int(request.args.get('G1'))
-        G2 = int(request.args.get('G2'))
+        try:
+            studytime = int(request.args.get('studytime'))
+            failures = int(request.args.get('failures'))
+            Dalc = int(request.args.get('Dalc'))
+            Walc = int(request.args.get('Walc'))
+            health = int(request.args.get('health'))
+            absences = int(request.args.get('absences'))
+            G1 = int(request.args.get('G1'))
+            G2 = int(request.args.get('G2'))
+        except TypeError:
+            abort(400, "input type is not integer")
 
-        
-        if  studytime < 0 or studytime > 4:
-            abort(400, "invalid studytime")
+        #check if user input is valid
+        if studytime < 0 or studytime > 4:
+            abort(400, "invalid studytime input")
             
-        #TODO: Add more cases to check the request parameters
+        if failures < 1 or failures == 3 or failures > 4:
+            abort(400, "invalid failures input")
+        
+        if Dalc < 1 or Dalc > 5:
+            abort(400, "invalid Dalc input")
+
+        if Walc < 1 or Walc > 5:
+            abort(400, "invalid Walc input")
+
+        if health < 1 or health > 5:
+            abort(400, "invalid health input")
+
+        if absences < 0 or absences > 93:
+            abort(400, "invalid absences input")
+
+        if G1 < 0 or G1 > 20:
+            abort(400, "invalid G1 input")
+
+        if G2 < 0 or G2 > 20:
+            abort(400, "invalid G2 input")
             
         
         query_df = pd.DataFrame({
@@ -47,26 +68,46 @@ def configure_routes(app):
         })
         query = pd.get_dummies(query_df)
         prediction = round(clf.predict(query)[0])
-        return jsonify(G3_score=str(prediction))
+        return jsonify(G3=str(prediction))
 
     @app.route('/predict/decision')
     def predict_decision():
-        #use entries from the query string here but could also use json
-        studytime = int(request.args.get('studytime'))
-        failures = int(request.args.get('failures'))
-        Dalc = int(request.args.get('Dalc'))
-        Walc = int(request.args.get('Walc'))
-        health = int(request.args.get('health'))
-        absences = int(request.args.get('absences'))
-        G1 = int(request.args.get('G1'))
-        G2 = int(request.args.get('G2'))
+        try:
+            studytime = int(request.args.get('studytime'))
+            failures = int(request.args.get('failures'))
+            Dalc = int(request.args.get('Dalc'))
+            Walc = int(request.args.get('Walc'))
+            health = int(request.args.get('health'))
+            absences = int(request.args.get('absences'))
+            G1 = int(request.args.get('G1'))
+            G2 = int(request.args.get('G2'))
+        except TypeError:
+            abort(400, "input type is not integer")
 
+        #check if user input is valid
+        if studytime < 0 or studytime > 4:
+            abort(400, "invalid studytime input")
+            
+        if failures < 1 or failures == 3 or failures > 4:
+            abort(400, "invalid failures input")
         
-        if  studytime < 0 or studytime > 4:
-            abort(400, "invalid studytime")
-            
-        #TODO: Add more cases to check the request parameters
-            
+        if Dalc < 1 or Dalc > 5:
+            abort(400, "invalid Dalc input")
+
+        if Walc < 1 or Walc > 5:
+            abort(400, "invalid Walc input")
+
+        if health < 1 or health > 5:
+            abort(400, "invalid health input")
+
+        if absences < 0 or absences > 93:
+            abort(400, "invalid absences input")
+
+        if G1 < 0 or G1 > 20:
+            abort(400, "invalid G1 input")
+
+        if G2 < 0 or G2 > 20:
+            abort(400, "invalid G2 input")
         
         query_df = pd.DataFrame({
             'Dalc': pd.Series([Dalc]),
